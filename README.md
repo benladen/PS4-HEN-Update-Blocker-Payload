@@ -1,6 +1,22 @@
 # PS4-HEN-Update-Blocker-Payload
 This Payload contains Debug settings, Update Blocker, and HEN in 1!
 
+**------ V2 Change Log--------**
+
+- Added PS4UPDATE.PUP.net.temp so Now the Update cant even download you will get "cannot download" instantly
+
+- Now the "PS4 HEN and Blocker V2 are Active" will only come up once the exploit has been successful
+
+- It will now look for the new Directory before creating it
+
+- Took away creating PS4UPADTE.PUP as its no longer needed (JS Version ONLY)
+
+- Converted V2 to JS for your website
+
+- added Defined Version
+
+
+
 ----UPDATED-----
 
 
