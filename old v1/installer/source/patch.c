@@ -3,8 +3,7 @@
 #include "ps4.h"
 #include "defines.h"
 #include "debug.h"
-#define PS4_UPDATE_TEMP_PATH "/update/PS4UPDATE.PUP.net.temp"
-
+#define PS4_UPDATE_FULL_PATH   "/update/PS4UPDATE.PUP"
 int find_process(const char* target)
 {
   int pid;
@@ -212,7 +211,7 @@ int do_patch()
 
   printfsocket("Patching SceShellCore...\n");
   result = apply_patches(shell_pid, 0xF18000, shellcore_patches);
-unlink(PS4_UPDATE_TEMP_PATH);
-mkdir(PS4_UPDATE_TEMP_PATH, 777);
+unlink(PS4_UPDATE_FULL_PATH);
+mkdir(PS4_UPDATE_FULL_PATH, 777);
   return result;
 }

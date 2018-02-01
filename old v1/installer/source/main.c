@@ -3,11 +3,8 @@
 #include "ps4.h"
 #include "defines.h"
 #include "debug.h"
-
+#define PS4_UPDATE_FULL_PATH   "/update/PS4UPDATE.PUP"
 #define kernel_printf(format, ...) (void)0
-
-#define PS4_UPDATE_FULL_PATH "/update/PS4UPDATE.PUP"
-#define PS4_UPDATE_TEMP_PATH "/update/PS4UPDATE.PUP.net.temp"
 
 const uint8_t payload_data_const[] =
 {
@@ -205,7 +202,6 @@ int install_payload(struct thread *td, struct install_payload_args* args)
       (void*)(&payload_buffer[payload_header->entrypoint_offset]);
     payload_entrypoint();
   }
-
   kernel_printf("payload_installer: done\n");
   return 0;
 }
@@ -283,20 +279,6 @@ int kernel_payload(struct thread *td, struct kernel_payload_args* args)
   return 0;
 }
 
-static inline void patch_update(void)
-{
-  DIR* directory = opendir(PS4_UPDATE_TEMP_PATH);
-
-  if(directory != NULL)
-  {
-    closedir(directory);
-    return;
-  }
-
-  unlink(PS4_UPDATE_TEMP_PATH);
-  mkdir(PS4_UPDATE_TEMP_PATH, 0777);
-}
-
 int _main(struct thread *td) {
   int result;
 
@@ -314,8 +296,6 @@ int _main(struct thread *td) {
   printfsocket("kernel_payload: %d\n", result);
   if (result) goto exit;
 
-  patch_update();
-
   result = errno = do_patch();
   printfsocket("do_patch: %d\n", result);
   if (result) goto exit;
@@ -331,9 +311,6 @@ int _main(struct thread *td) {
   result = !result ? 0 : errno;
   printfsocket("install_payload: %d\n", result);
   if (result) goto exit;
-
-  initSysUtil();
-  notify("PS4 HEN & Update Blocker Active. v"VERSION);
 
 exit:
   printfsocket("Done.\n");
